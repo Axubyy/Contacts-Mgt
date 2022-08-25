@@ -1,0 +1,9 @@
+
+{% for fav_contact in contacts %}
+
+<a href="{% url "contact-detail" fav_contact.pk %}">
+         {{fav_contact}}
+</a>
+{% endfor %}
+
+<a href="{% url "favourites" contact.pk %}">Remove from Favourites</a>

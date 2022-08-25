@@ -19,6 +19,8 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 
+from .utils import send_email_verification
+
 
 from .forms import RegistrationForm, UserProfileForm, UserForm
 from .models import Account, UserProfile
@@ -36,21 +38,32 @@ class AccountPasswordChangeDoneView(LoginRequiredMixin, PasswordChangeDoneView):
 
 
 def register(request):
+    print(request.user)
+    print('HHHHH')
     if request.method == "POST":
         form = RegistrationForm(request.POST)
+        print(form.errors)
+        print(form.is_valid())
         if form.is_valid():
+            print("Got here too")
             username = form.cleaned_data["username"]
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             password = form.cleaned_data["password"]
             email = form.cleaned_data["email"]
+            phone_number = form.cleaned_data["phone_number"]
 
+            print("Got here")
             user = Account.objects.create_user(
                 username=username, first_name=first_name, last_name=last_name, email=email, password=password)
-            return redirect('login')
+            user.phone_number = phone_number
+            user.save()
+            send_email_verification(request, user)
+            print("Got Here")
+            return redirect('/account/login/?command=verification&email=' + email)
     else:
         form = RegistrationForm()
-        return render(request, "account/signup.Sightml", {
+        return render(request, "account/signup.html", {
             "form": form})
 
 
@@ -78,7 +91,7 @@ def user_login(request):
         else:
             print(user)
             messages.error(request, "Invalid Login Credentials")
-    return render(request, 'account/test.html')
+    return render(request, 'account/login.html')
 
 
 @login_required(login_url="login")
@@ -103,7 +116,7 @@ def activate(request, uidb64, token):
         return redirect('login')
 
     else:
-        messages.error(request, "Invalid Activation Link")
+        messages.error(request, "Invalid Activation Link!")
         return redirect('register')
 
 

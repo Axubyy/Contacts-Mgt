@@ -136,12 +136,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR/'static'
+STATICFILES_URL = [
+    BASE_DIR/'static',
+]
+
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'azubuinesamuel@gmail.com'
-EMAIL_HOST_PASSWORD = 'azubyne1607@@'
+EMAIL_HOST_PASSWORD = 'kwftekunbtwhscne'
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Samuel from Contactly <azubuinesamuel1607@gmail.com>'
 
 
 # Default primary key field type

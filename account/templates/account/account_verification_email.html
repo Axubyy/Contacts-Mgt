@@ -1,0 +1,12 @@
+
+{% autoescape off %}
+
+Hi {{ user.first_name}},
+
+Plaese click on the link below to activate and confirm your Contactly account .
+http://{{domain}}{% url 'activate' uidb64=uid token=token %} 
+
+If you think this is not you, Please ignore this message.
+
+
+{% endautoescape %}

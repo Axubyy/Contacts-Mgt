@@ -31,8 +31,7 @@ class RegistrationForm(forms.ModelForm):
         self.fields["email"].widget.attrs["placeholder"] = "Enter Email Address"
         self.fields["password"].widget.attrs["placeholder"] = "Enter Your Password"
         self.fields["confirm_password"].widget.attrs["placeholder"] = "Confirm Your Password"
-        # for field in self.fields:
-        # if self.fields["email"]:
+        # for f
         self.fields["first_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
         self.fields["last_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
         self.fields["username"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"

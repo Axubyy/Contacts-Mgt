@@ -29,3 +29,6 @@ urlpatterns = [
     path('account/', include("account.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
+
+
+# style = "background: linear-gradient(90deg, hsla(217, 100%, 50%, 1) 0%, hsla(186, 100%, 69%, 1) 100%);"

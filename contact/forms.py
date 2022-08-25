@@ -1,6 +1,7 @@
+from dataclasses import field
 from django import forms
 
-from .models import Contact
+from .models import Contact, CsvDocs
 
 
 class ContactForm(forms.ModelForm):
@@ -17,3 +18,9 @@ class ContactForm(forms.ModelForm):
         self.fields["category"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
         self.fields["contact_avatar"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
         self.fields["gender"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+
+
+class CsvForm(forms.ModelForm):
+    class Meta:
+        model = CsvDocs
+        fields = ["file_name"]

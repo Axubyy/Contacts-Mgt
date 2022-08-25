@@ -48,3 +48,12 @@ class Contact(models.Model):
 
     def get_absolute_url(self):
         return reverse("contact-detail", kwargs={"pk": self.pk})
+
+
+class CsvDocs(models.Model):
+    file_name = models.FileField(upload_to="files/csvs")
+    activated = models.BooleanField(default=False)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f" File id {self.id}"
