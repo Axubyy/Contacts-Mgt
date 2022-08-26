@@ -82,8 +82,9 @@ def user_login(request):
     if request.method == "POST":
         email = request.POST["email"]
         password = request.POST["password"]
-
+        print(email, password)
         user = auth.authenticate(email=email, password=password)
+        print(user)
         if user is not None:
             auth.login(request, user)
             messages.success(request, "You have successfully logged-in!")
@@ -194,18 +195,21 @@ def reset_password(request):
         return render(request, "accounts/reset_password.html")
 
 
-def edit_profile(request):
-    user_profile = get_object_or_404(UserProfile, user=request.user)
+def edit_profile(request, profile_pk):
+    user_profile = get_object_or_404(UserProfile, pk=profile_pk)
     if request.method == "POST":
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(
             request.POST, request.FILES, instance=user_profile)
-
+        print(user_form.errors)
+        print(profile_form.errors)
         if user_form.is_valid() and profile_form.is_valid():
+            print("Did it")
             user_form.save()
             profile_form.save()
             messages.success(request, "Your Update was saved successfully")
-            return redirect('edit-profile')
+            print("Here")
+            return redirect(reverse('edit-profile', args=[profile_pk]))
 
     else:
         user_form = UserForm(instance=request.user)
@@ -215,7 +219,7 @@ def edit_profile(request):
         "profile_form": profile_form
     }
 
-    return render(request, "accounts/edit_profile.html", context)
+    return render(request, "account/profile_update.html", context)
 
 
 class RegisterView(View):
@@ -267,6 +271,13 @@ class ProfileDetailView(DetailView):
     context_object_name = 'profile'
     model = UserProfile
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        account = self.get_object()
+        account = account.user
+        context["favourite_contacts"] = account.favourite.all()
+        return context
+
 
 def change_password(request):
     if request.method == 'POST':
@@ -288,7 +299,7 @@ def change_password(request):
 
 @login_required(login_url='login')
 def dashboard(request):
-    return render(request, "accounts/dashboard.html")
+    return render(request, "account/dashboard.html")
 
 
 def page_404(request, exception=None):

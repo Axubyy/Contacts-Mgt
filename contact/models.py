@@ -2,6 +2,8 @@ from django.db import models
 from account.models import Account
 from django.urls import reverse
 
+from contact.validators import file_validator
+
 # Create your models here.
 
 
@@ -41,6 +43,7 @@ class Contact(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
     objects_gender = MyAccountContactsGenderManager()
 
     def __str__(self) -> str:
@@ -50,8 +53,9 @@ class Contact(models.Model):
         return reverse("contact-detail", kwargs={"pk": self.pk})
 
 
-class CsvDocs(models.Model):
-    file_name = models.FileField(upload_to="files/csvs")
+class CsvDoc(models.Model):
+    file_name = models.FileField(
+        upload_to="files/csvs", validators=[file_validator])
     activated = models.BooleanField(default=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 

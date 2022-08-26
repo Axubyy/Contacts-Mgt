@@ -88,25 +88,24 @@ class LoginForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = Account
-        fields = ["first_name", "last_name"]
+        fields = ["first_name", "last_name", "username", "email"]
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+
+        self.fields["first_name"].widget.attrs["class"] = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm: text-sm border-gray-400 rounded-md"
+        self.fields["last_name"].widget.attrs["class"] = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm: text-sm border-gray-400 rounded-md"
+        self.fields["username"].widget.attrs["class"] = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm: text-sm border-gray-400 rounded-md"
+        self.fields["email"].widget.attrs["class"] = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm: text-sm border-gray-400 rounded-md"
 
 
 class UserProfileForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=50)
-    username = forms.CharField(max_length=50)
-    last_name = forms.CharField(max_length=50)
-    email = forms.EmailField(max_length=100)
-    phone_number = forms.IntegerField()
-
     class Meta:
         model = UserProfile
-        fields = ["profile_pix", "location"]
+        fields = ["profile_pix", "location", "phone_number"]
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
-
-        self.fields["first_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["last_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["profile_pix"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["location"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["phone_number"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+        self.fields["profile_pix"].widget.attrs["class"] = "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm: text-sm border-gray-400 rounded-md"
+        self.fields["location"].widget.attrs["class"] = "mt-1 focus:ring-indigo-500 focus:border-indigo-500  block w-full shadow-sm sm: text-sm border-gray-400 rounded-md"
+        self.fields["phone_number"].widget.attrs["class"] = "mt-1 ring-indigo-500 focus:border-indigo-500  block w-full shadow-sm sm: text-sm border-gray-400 rounded-md"

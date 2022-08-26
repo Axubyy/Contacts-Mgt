@@ -51,7 +51,7 @@ class Account(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     is_superadmin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["first_name", "last_name", "username", ]
@@ -72,7 +72,7 @@ class UserProfile(models.Model):
         Account, on_delete=models.CASCADE, related_name="profile", blank=True, null=True)
     location = models.CharField(max_length=50, null=True, blank=True)
     profile_pix = models.ImageField(
-        upload_to="profile_photo", default="no_pix.jpeg", blank=True)
+        upload_to="profile/profile_photo", default=None, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
 
     def get_absolute_url(self):

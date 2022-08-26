@@ -16,26 +16,24 @@
 {% endblock css_content %}
   
 {% block content %}
-
-
 <div  class="max-h-full w-full flex items-center justify-center box-content mt-20 sm:mt-0">
   <div class="flex-row w-2/4 h-full">
         <div class="md:col-span-1 m-35">
           <div class="px-4 sm:px-0 m-10">
-              <h3 class="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
+              <h3 class="text-lg font-medium leading-6 text-gray-900">Import Contact as CSV File</h3>
               <p class="mt-1 text-sm text-gray-800">Update Your Profile.</p>
           </div>
         </div>
     <div class="mt-10 md:mt-0 md:col-span-2 bg-cyan-600 flex-auto items-center justify-center rounded">
       
-      <form action="{% url 'edit-profile' request.user.profile.pk %}" method="POST">
+      <form action="{% url 'import-contacts' request.user.pk %}" method="POST">
        {% csrf_token %}
         <div class="shadow overflow-hidden sm:rounded-lg">
           <div class="px-4 py-5 bg-white sm:p-6">
             <div class="md:col-span-1 m-35">
               
           <div class="px-4 sm:px-0 m-10 flex justify-between">
-              <h3 class="text-lg font-medium leading-6 text-gray-900">Update Profile </h3>
+              <h3 class="text-lg font-medium leading-6 text-gray-900">Import</h3>
             <img class="block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow">
             <p class="text-gray-800 mx-3 font-black">Contactly</p>
             
@@ -62,46 +60,18 @@
     </div>
   </div>
 </div>
-            {% endif %}
-            <div class="grid grid-cols-6 gap-6 ">
-              <div class="col-span-6 sm:col-span-3 lg:col-span-3">
-                <label for="first-name" class="block text-sm font-medium text-gray-700">First name</label>
-                {{user_form.first_name}}
-              </div>
-
-              <div class="col-span-6 sm:col-span-3 lg:col-span-3">
-                <label for="last-name" class="block text-sm font-medium text-gray-700">Last name</label>
-                {{user_form.last_name}}
-              </div>
-
-              <div class="col-span-6 sm:col-span-3 lg:col-span-3">
-                <label for="last-name" class="block text-sm font-medium text-gray-700">User name</label>
-                {{user_form.username}}
-              </div>
-
-              <div class="col-span-6 sm:col-span-3">
-                <label for="email-address" class="block text-sm font-medium text-gray-700">Email address</label>
-                {{user_form.email}}
-              </div>
-              <div class="col-span-6 sm:col-span-3">
-                <label for="email-address" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                {{profile_form.phone_number}}
-              </div>
-              <div class="col-span-6 sm:col-span-3">
-                <label for="email-address" class="block text-sm font-medium text-gray-700">Location</label>
-                {{profile_form.location}}
-              </div>
+{% endif %}
               <div class="col-span-6 sm:col-span-6 lg:col-span-9 ">
                 <label for="last-name" class="block text-sm font-medium text-gray-700">Profile Picture</label>
                 <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
                 </svg>
-                {{profile_form.profile_pix}}
+                {{form.file_name}}
               </div>
             </div>
           </div>
           <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"> Update</button>
+            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Import File</button>
           </div>
         </div>
       </form>

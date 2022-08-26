@@ -1,16 +1,19 @@
+{% extends "account/base.html" %}
 {% load static %}
 {% load tailwind_tags %}
 
 {% tailwind_css %}
 
+{% block content %}
 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
   <div class="px-4 py-5 sm:px-6">
                      <a href="#">
-                            <img class="h-10 w-10 rounded-full" src="{{ profile.profile_pix.url }}" alt="">
+                            <img class="h-10 w-10 rounded-full" src="{{ request.user.profile.profile_pix.url }}" alt="">
                         </a>
     <h3 class="text-lg leading-6 font-medium text-gray-900">{{profile.user.last_name}} {{profile.user.first_name}}</h3>
     <p class="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
   </div>
+  
   <div class="border-t border-gray-200">
     <dl>
       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -18,20 +21,20 @@
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"></dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">Bio</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{profile.user.bio}} </dd>
+        <dt class="text-sm font-medium text-gray-500">Location</dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{profile.user.location}} </dd>
       </div>
       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm font-medium text-gray-500">Email address</dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{profile.user.email}} </dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">Salary expectation</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">$120,000</dd>
+        <dt class="text-sm font-medium text-gray-500">Date Joined</dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{profile.user.date_joined}}</dd>
       </div>
       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">About</dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.</dd>
+        <dt class="text-sm font-medium text-gray-500">Last updated</dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{profile.user.last_updated}}</dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm font-medium text-gray-500">Attachments</dt>
@@ -46,7 +49,8 @@
                 <span class="ml-2 flex-1 w-0 truncate">  </span>
               </div>
               <div class="ml-4 flex-shrink-0">
-                <a href="{% url 'edit-profile' profile.pk %}" class="font-medium text-indigo-600 hover:text-indigo-500"> Edit Profile </a>
+                <a href="{% url "edit-profile" profile.pk %}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"> Edit Profile</a>
+                {% comment %} <a href="{% url "edit-profile" profile.pk %}" class="font-medium text-indigo-600 hover:text-indigo-00"> Edit Profile </a> {% endcomment %}
               </div>
             </li>
           </ul>
@@ -55,3 +59,5 @@
     </dl>
   </div>
 </div>
+
+{% endblock content %}

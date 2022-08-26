@@ -13,7 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from django.views.generic import RedirectView
 from django.conf.urls import (handler400, handler404, handler403, handler500)
@@ -28,7 +31,7 @@ urlpatterns = [
     path('contact/', include('contact.urls')),
     path('account/', include("account.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 # style = "background: linear-gradient(90deg, hsla(217, 100%, 50%, 1) 0%, hsla(186, 100%, 69%, 1) 100%);"

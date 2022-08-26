@@ -10,6 +10,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <script src="https://cdn.tailwindcss.com"></script>
+     
+     {% block css_content %}
+      
+     {% endblock css_content %}
+      
     <title>App</title>
 </head>
 <body>
@@ -75,7 +80,7 @@
                             Edit Profile
                         </a>
 {{user}}
-                        <a href="" class="text-gray-600 hover:bg-indigo-500 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <a href="{% url "export-contacts" request.user.pk %}" class="text-gray-600 hover:bg-indigo-500 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                             <!-- Heroicon name: outline/map -->
                             <svg class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
@@ -195,14 +200,16 @@
           <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate">Contactly DashBoard</h1>
         </div>
         <div class="mt-4 flex sm:mt-0 sm:ml-4">
-          <button type="button" class="order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-0 sm:ml-0">Import Contact CSV</button>
-          <button type="button" class="order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-1 sm:ml-3">Create A Contact</button>
+          <a href="{% url "import-contacts" request.user.pk %}" class="order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-0 sm:ml-0">Import Contact CSV</a>
+          <a href="{% url "create-contact" request.user.pk %}" class="order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-1 sm:ml-3">Create A Contact</a>
         </div>
       </div>
-      
+      <div>
         {% block content %}
-            {% include 'contact/contacts_overview.html' %}
+            
         {% endblock content %}
+      </div>
+    
             
 
     </main>

@@ -51,22 +51,37 @@
 -->
 <div   class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
-                <svg
-            class="w-6 h-6 text-blue-300 fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24">
-            <path
-                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
-            />
-            </svg>
+    <div><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-2xl font-medium bg-gray-100 text-gray-800"> Contactly </span>
+    <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow"></img>
+    </div>
+  
+            
     {% if request.GET.command == 'verification' %}
-    <h4 class="mt-6 text-center text-3xl font-extrabold text-gray-900">We have sent a verification Email to the email address yo provided{{request.GET.email}}. Please Verify it to login</h4>
-    <p>Already Verified ?  <a href="{% url "login" %}">Login</a> </p>
+    <div class="bg-white">
+  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+            <div>
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Used by the world's most effective players for Contact Mgt</h2>
+                <p class="mt-3 max-w-3xl text-lg text-gray-500">We have sent a verification Email to the email address you provided [{{request.GET.email}}]. Please verify it to login📲.</p>
+                    <div class="mt-8 sm:flex">
+                       <div class="flex flex-col my-96 justify-start items-center">
+                            <p class="mt-6 text-center text-x font-extrabold ml-10 pl-10 text-gray-900">Already Verified ? 
+                               <a href="{% url "login" %}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Login</a> </p>
+                      </div>
+                    </div>
+            </div>
+        
+    </div>
+  </div>
+</div>
+
+
+   
     {% else %}
     <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
     <p class="mt-2 text-center text-sm text-gray-600">
       Or
-      <a href="#" class="font-medium text-slate-600 hover:text-slate-500"> start your 14-day free trial </a>
+      <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> start your 14-day free trial </a>
     </p>
   </div>
 
@@ -169,12 +184,12 @@
           </div>
 
           <div class="text-sm">
-            <a href="#" class="font-medium text-cyan-600 hover:text-cyan-500"> Forgot your password? </a>
+            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
           </div>
         </div>
 
         <div>
-          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sign in</button>
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sign in</button>
         </div>
       </form>
 
@@ -223,7 +238,11 @@
       </div>
     </div>
     {% endif %}
+    <div class="mt-50 pt-80 flex justify-center items-center"><span class="inline-flex  items-center px-2.5 py-0.5 rounded-full text-2xl font-medium bg-gray-100 text-gray-800"> Contactly 2022 </span>
+    
+    </div>
   </div>
+  
 </div>
 
 </body>

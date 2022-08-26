@@ -13,7 +13,7 @@ from django.shortcuts import redirect
 
 from account.models import Account
 from .forms import ContactForm, CsvForm
-from .models import Contact, CsvDocs
+from .models import Contact, CsvDoc
 
 # Create your views here.
 
@@ -145,17 +145,22 @@ def add_contact_as_favourite(request, contact_pk):
 
 
 def generate_contact_csv(request, account_pk):
+    manager = Account.objects.get(pk=account_pk)
     resp = HttpResponse(content_type="text/csv")
     resp["Content-Disposition"] = 'attachment; filename=contacts.csv'
-    contacts = Contact.objects.all()
+    # contacts = Contact.objects.all()
     contacts = Contact.objects.filter(manager__pk=account_pk)
     headers = ["first_name", "last_name", "manager", "gender", "category",
                "contact_avatar", "favourite", "date_created", "date_updated"]
     writer = csv.writer(resp)
     writer.writerow(headers)
     for contact in contacts:
+        query = contact.favourite.filter(pk=account_pk)
+        for attr in query:
+            query = attr.username
+            print(query)
         writer.writerow([contact.first_name, contact.last_name, contact.manager.username, contact.gender, contact.category,
-                        contact.contact_avatar.path, contact.favourite.username, contact.date_created, contact.date_updated])
+                        contact.contact_avatar.path, query, contact.date_created, contact.date_updated])
     return resp
 
 
@@ -167,7 +172,7 @@ def import_csv(request, account_pk):
             form = CsvForm()
             contact_list = []
             try:
-                obj = CsvDocs.objects.get(activated=False)
+                obj = CsvDoc.objects.get(activated=False)
                 with open(obj.file_name.path, 'r') as file:
                     reader = csv.reader(file)
                     for i, row in enumerate(reader):

@@ -5,6 +5,9 @@ from django.contrib import admin
 
 
 # Register your models here.
+class UserProfileAdmin(admin.StackedInline):
+    list_display = ["location", "phone_number"]
+    model = UserProfile
 
 
 class AccountAdmin(UserAdmin):
@@ -17,12 +20,8 @@ class AccountAdmin(UserAdmin):
     filter_horizontal = ()
     fieldsets = ()
     list_filter = ()
-
-
-class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ["user", "location", "phone_number"]
+    inlines = [UserProfileAdmin]
 
 
 # Register your models here.
 admin.site.register(Account, AccountAdmin)
-admin.site.register(UserProfile, UserProfileAdmin)
