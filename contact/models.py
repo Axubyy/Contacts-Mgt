@@ -55,7 +55,7 @@ class Contact(models.Model):
 
 class CsvDoc(models.Model):
     file_name = models.FileField(
-        upload_to="files/csvs", validators=[file_validator])
+        upload_to="files/csvs", validators=[file_validator], default=None)
     activated = models.BooleanField(default=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 

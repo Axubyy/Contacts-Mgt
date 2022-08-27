@@ -49,30 +49,48 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError(" Password doesn't match!")
 
 
-class PasswordChangeForm(forms.ModelForm):
-    old_password = forms.CharField(widget=forms.PasswordInput(attrs={
-        "placeholder": "Enter your Password",
-    }))
+class ResetPasswordForm(forms.ModelForm):
     new_password = forms.CharField(widget=forms.PasswordInput(attrs={
-        "placeholder": "Confirm your password"
+        "placeholder": "Enter your new password",
+        "class": "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
     }))
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
-        "placeholder": "Confirm your password"
+        "placeholder": "Confirm password",
+        "class": "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
     }))
 
     class Meta:
         model = Account
         fields = ["password"]
 
-    def __init__(self, *args, **kwargs):
-        super(UserProfileForm, self).__init__(*args, **kwargs)
 
-        self.fields["first_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["last_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["username"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["email"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["profile_pix"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["bio"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+class PasswordChangeForm(forms.ModelForm):
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        "placeholder": "Enter your Password",
+        "class": "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+    }))
+    new_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        "placeholder": "Enter your new password",
+        "class": "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+    }))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        "placeholder": "Confirm password",
+        "class": "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+    }))
+
+    class Meta:
+        model = Account
+        fields = ["password"]
+
+    # def __init__(self, *args, **kwargs):
+    #     super(UserProfileForm, self).__init__(*args, **kwargs)
+
+    #     self.fields["first_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+    #     self.fields["last_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+    #     self.fields["username"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+    #     self.fields["email"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+    #     self.fields["profile_pix"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+    #     self.fields["bio"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
 
 
 class LoginForm(forms.ModelForm):

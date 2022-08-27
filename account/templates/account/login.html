@@ -25,30 +25,7 @@
       animation: notify 7s;
     }
   </style>
-    <!--
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
-<!--
-  This example requires updating your template:
-
-  ```
-  <html class="h-full bg-gray-50">
-  <body class="h-full">
-  ```
--->
+    
 <div   class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
     <div><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-2xl font-medium bg-gray-100 text-gray-800"> Contactly </span>
@@ -104,9 +81,11 @@
                                 <h3 class="text-sm font-medium text-red-800">Error</h3>
                                 <div class="mt-2 text-sm text-red-700">
                                     <ul role="list" class="list-disc pl-5 space-y-1">
-                                    {% for error  in form.errors %}
-                                    <p>{{ error}}</p>
-                                        {% endfor %}
+                                      {% for field in form %}
+                                    {% for error  in field.errors %}
+                                        <li>{{ error}}🙄</li>
+                                      {% endfor %}
+                                    {% endfor %}
                                     </ul>
                                 </div>
                             </div>
@@ -130,7 +109,7 @@
                                 <div class="mt-2 text-sm text-red-400">
                                     <ul role="list" class="list-disc pl-5 space-y-1">
                                   
-                                    <p>{{ message }}</p>
+                                    <p>{{ message }}🎉</p>
                                     </ul>
                                 </div>
                             </div>
@@ -183,8 +162,8 @@
             <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Remember me </label>
           </div>
 
-          <div class="text-sm">
-            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
+          <div class="text-sm ">
+            <a href="{% url "forgot-password" %}" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
           </div>
         </div>
 

@@ -5,12 +5,13 @@ from .models import Contact, CsvDoc
 
 
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ["gender", "first_name", "last_name"]
+    list_display = ["gender", "first_name",
+                    "last_name", "date_created", "date_updated"]
 
 
-class CsvDocsAdmin(admin.ModelAdmin):
+class CsvDocAdmin(admin.ModelAdmin):
     list_display = ["file_name"]
 
 
 admin.site.register(Contact, ContactAdmin)
-admin.site.register(CsvDoc, CsvDocsAdmin)
+admin.site.register(CsvDoc, CsvDocAdmin)

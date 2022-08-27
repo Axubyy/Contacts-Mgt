@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.HomeView.as_view(), name='home'),
+    path('', views.home, name='home'),
     path('all-contacts/', views.contacts_overview, name='all-contacts'),
     path('detail/<int:pk>/', views.ContactDetailView.as_view(),
          name="contact-detail"),
@@ -14,7 +14,8 @@ urlpatterns = [
          views.ContactUpdateView.as_view(), name="update-contact"),
     path('delete/<int:pk>/',
          views.ContactDeleteView.as_view(), name="delete-contact"),
-    path('fav/<int:contact_pk>/', views.add_contact_as_favourite, name="favourite"),
+    path('favourite/<int:contact_pk>/',
+         views.add_contact_as_favourite, name="favourite"),
     path('favourites/', views.list_favourites_contacts, name='favourite-contacts'),
     path('export-csv/<int:account_pk>/',
          views.generate_contact_csv, name='export-contacts'),

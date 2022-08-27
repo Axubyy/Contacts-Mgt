@@ -18,13 +18,28 @@ from .models import Contact, CsvDoc
 # Create your views here.
 
 
-class HomeView(TemplateView):
+class HomeView(ListView):
     template_name = "contact/index.html"
     context_object_name = 'contacts'
+    model = Contact
 
     def get_queryset(self):
         contacts = super().get_queryset().filter(manager=self.request.user)
+        print(contacts)
         return contacts
+
+
+def home(request):
+    context = {
+        "all_contact": Contact.objects.all().count(),
+        "male_contacts": Contact.objects_gender.male().count(),
+        "female_contacts": Contact.objects_gender.female().count(),
+        "non_binary": Contact.objects_gender.non_binary().count(),
+        "all_contacts": Contact.objects.all(),
+        "personal_contacts_count": Contact.objects.filter(manager=request.user).count(),
+        "personal_contacts": Contact.objects.filter(manager=request.user),
+    }
+    return render(request, "contact/index.html", context)
 
 
 # class HomeView(ListView):
@@ -68,6 +83,9 @@ class ContactDetailView(LoginRequiredMixin, DetailView):
     model = Contact
     context_object_name = 'contact'
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+
 
 def contacts_overview(request):
 
@@ -80,13 +98,13 @@ def contacts_overview(request):
         "personal_contacts_count": Contact.objects.filter(manager=request.user).count(),
         "personal_contacts": Contact.objects.filter(manager=request.user),
     }
-    return render(request, "contact/contact_overview.html", context)
+    return render(request, "contact/contacts_overview.html", context)
 
 
 class ContactDeleteView(LoginRequiredMixin, DeleteView):
     model = Contact
     template_name = 'delete.html'
-    success_url = reverse_lazy('/')
+    success_url = reverse_lazy('home')
 
     def delete(self, request, *args, **kwargs):
         messages.success(
@@ -114,11 +132,12 @@ def SearchView(request):
 
 @login_required(login_url='login')
 def list_favourites_contacts(request):
-    user_id = request.user.id
+    user_id = request.user
     contacts = Contact.objects.filter(favourite=user_id)
-    re_contact = Contact.objects.get(favourite=user_id)
-    return render(request, "contact/favourites.html", {
-        "fav_contacts": re_contact
+    print(contacts)
+    print(user_id.username)
+    return render(request, "contact/favourite_contacts.html", {
+        "contacts": contacts
     })
 
 
@@ -165,9 +184,16 @@ def generate_contact_csv(request, account_pk):
 
 
 def import_csv(request, account_pk):
-    form = CsvForm(request.POST or None, request.FILES or None,)
+
     if request.method == "POST":
+        form = CsvForm(request.POST or None, request.FILES or None)
+        data = request.FILES.get("file_name", None)
+        print(data)
+        print(form.is_valid())
+        print(form.errors)
+        print("Formmm")
         if form.is_valid():
+            print("here")
             form.save()
             form = CsvForm()
             contact_list = []
@@ -182,19 +208,29 @@ def import_csv(request, account_pk):
                             row = "".join(row)
                             row = row.replace(";", " ")
                             row = row.split()
-                            manager = Account.objects.get(username=row[3])
+                            manager = Account.objects.get(username=row[2])
+
                             import_account = Account.objects.get(pk=account_pk)
-                            contact_list.append(Contact(first_name=row[1], last_name=row[2], manager=manager,
-                                                        gender=row[4], category=row[5], contact_avatar=row[6], favourite=manager, created_at=row[8], updated_at=row[9]))
+                            contact_list.append(Contact(first_name=row[0], last_name=row[1], manager=manager.username,
+                                                        gender=row[3], category=row[4], contact_avatar=row[5], favourite=manager.username, date_created=row[7], date_updated=row[8]))
                 contacts = Contact.objects.bulk_create(
                     contact_list)
                 obj.activated = True
                 obj.save()
+                messages.success(
+                    request, "Your Contact Imports sUccessfully Created!🎉")
             except (TypeError, ValueError, OverflowError, Account.DoesNotExist) as e:
                 print(e)
-            return redirect('all-contacts')
 
+            return redirect('all-contacts')
+        else:
+            form = CsvForm(request.POST, request.FILES)
+            print("else")
+            return render(request, "contact/import_csv_form.html", {
+                'form': form,
+            })
     else:
+        form = CsvForm()
         return render(request, "contact/import_csv_form.html", {
             'form': form,
         })

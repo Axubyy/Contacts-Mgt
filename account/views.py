@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
+# from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import View, ListView, CreateView, DetailView, DeleteView, UpdateView
@@ -19,22 +19,13 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 
-from .utils import send_email_verification
+from .utils import send_email_verification, send_password_reset_verification
 
 
-from .forms import RegistrationForm, UserProfileForm, UserForm
+from .forms import RegistrationForm, ResetPasswordForm, UserProfileForm, UserForm, PasswordChangeForm
 from .models import Account, UserProfile
 
 # # Create your views here.
-
-
-class AccountPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
-    template_name = "account/password_change.html"
-    success_url = reverse_lazy("password-done")
-
-
-class AccountPasswordChangeDoneView(LoginRequiredMixin, PasswordChangeDoneView):
-    template_name = "account/password_done.html"
 
 
 def register(request):
@@ -129,19 +120,7 @@ def forgot_password(request):
         if Account.objects.filter(email__iexact=email).exists():
             user = Account.objects.get(email__iexact=email)
             if user is not None:
-                current_site = get_current_site(request)
-                email_subject = "Create a new  Password"
-                message = render_to_string("accounts/reset_password_email.html", {
-                    "user": user,
-                    "domain": current_site,
-                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                    "token": default_token_generator.make_token(user)
-                })
-
-                email_to = email
-                send_email = EmailMessage(
-                    email_subject, message, to=[email_to])
-                send_email.send()
+                send_password_reset_verification(request, user)
                 messages.success(
                     request, "Password reset email has  been sent to email address")
                 return redirect('login')
@@ -149,7 +128,7 @@ def forgot_password(request):
                 messages.error(request, "Invalid User Credential")
                 return redirect('forgot-password')
 
-    return render(request, "accounts/forgot_password.html")
+    return render(request, "account/forgot_password.html")
 
 # checks the token and uid from the email sent  and saves the user_pk in the session
 # Runs only when the email link is clicked
@@ -178,11 +157,12 @@ def reset_password(request):
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
 
-        if password == confirm_password and old_password != password:
+        if password == confirm_password:
             user_pk = request.session.get("uid")
             user = Account.objects.get(pk=user_pk)
             if user:
                 user.set_password(password)  # hashes the password
+                user.is_active = True
                 user.save()
                 messages.success(
                     request,  "Password Reset Successful,Please login with your new password")
@@ -192,9 +172,34 @@ def reset_password(request):
                 request, "Passwords doesn't match. Please Input again")
             return redirect('reset-password')
     else:
-        return render(request, "accounts/reset_password.html")
+        form = ResetPasswordForm()
+        return render(request, "account/reset_password.html", {
+            "form": form
+        })
 
 
+@login_required(login_url='login')
+def change_password(request):
+    if request.method == "POST":
+        old_password = request.POST["old_password"]
+        password = request.POST["password"]
+        confirm_password = request.POST["confirm_password"]
+
+        if request.user.check_password(old_password) and password == confirm_password:
+            request.user.set_password(password)
+            request.user.save()
+            update_session_auth_hash(request, request.user)
+            messages.success(request, "Your password was updated successfully")
+            print("Changed password Here")
+            return redirect('change-password')
+    else:
+        form = PasswordChangeForm()
+        return render(request, "account/change_password.html", {
+            "form": form
+        })
+
+
+@login_required(login_url='login')
 def edit_profile(request, profile_pk):
     user_profile = get_object_or_404(UserProfile, pk=profile_pk)
     if request.method == "POST":
@@ -222,11 +227,7 @@ def edit_profile(request, profile_pk):
     return render(request, "account/profile_update.html", context)
 
 
-class RegisterView(View):
-    template_name = 'account/signup.html'
-
-
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
     template_name = "account/profile_update.html"
     form_class = UserProfileForm
     context_object_name = 'profile'
@@ -279,22 +280,22 @@ class ProfileDetailView(DetailView):
         return context
 
 
-def change_password(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
-            messages.success(
-                request, 'Your password was successfully updated!')
-            return redirect('change_password')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'accounts/change_password.html', {
-        'form': form
-    })
+# def change_password(request):
+#     if request.method == 'POST':
+#         form = PasswordChangeForm(request.user, request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             update_session_auth_hash(request, user)
+#             messages.success(
+#                 request, 'Your password was successfully updated!')
+#             return redirect('change_password')
+#         else:
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         form = PasswordChangeForm(request.user)
+#     return render(request, 'accounts/change_password.html', {
+#         'form': form
+#     })
 
 
 @login_required(login_url='login')
@@ -307,7 +308,7 @@ def page_404(request, exception=None):
 
 
 def page_403(request, exception=None):
-    return render(request, "account/404.html")
+    return render(request, "account/test2.html")
 
 
 def page_400(request, exception=None):
