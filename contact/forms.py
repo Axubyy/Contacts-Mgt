@@ -13,11 +13,11 @@ class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
 
-        self.fields["first_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["last_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["category"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["contact_avatar"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
-        self.fields["gender"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+        self.fields["first_name"].widget.attrs["class"] = "mt-1 focus: ring-indigo-500 focus: border-indigo-500 block w-full shadow-sm sm: text-sm border-indigo-300 rounded-md"
+        self.fields["last_name"].widget.attrs["class"] = "mt-1 focus: ring-indigo-500 focus: border-indigo-500 block w-full shadow-sm sm: text-sm border-indigo-300 rounded-md"
+        self.fields["category"].widget.attrs["class"] = "mt-1 focus: ring-indigo-500 focus: border-indigo-500 block w-full shadow-sm sm: text-sm border-indigo-300 rounded-md"
+        self.fields["contact_avatar"].widget.attrs["class"] = "mt-1 focus: ring-indigo-500 focus: border-indigo-500 block w-full shadow-sm sm: text-sm border-indigo-300 rounded-md"
+        self.fields["gender"].widget.attrs["class"] = "mt-1 focus: ring-indigo-500 focus: border-indigo-500 block w-full shadow-sm sm: text-sm border-indigo-300 rounded-md"
 
 
 class CsvForm(forms.ModelForm):
@@ -28,7 +28,7 @@ class CsvForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CsvForm, self).__init__(*args, **kwargs)
 
-        self.fields["file_name"].widget.attrs["class"] = "mt-1 focus: ring-cyan-500 focus: border-cyan-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+        self.fields["file_name"].widget.attrs["class"] = "mt-1 focus: ring-indigo-500 focus: border-indigo-500 block w-full shadow-sm sm: text-sm border-indigo-300 rounded-md"
 
     def clean(self):
         cleaned_data = super(CsvForm, self).clean()

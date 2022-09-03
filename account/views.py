@@ -22,7 +22,7 @@ from django.core.mail import EmailMessage
 from .utils import send_email_verification, send_password_reset_verification
 
 
-from .forms import RegistrationForm, ResetPasswordForm, UserProfileForm, UserForm, PasswordChangeForm
+from .forms import LoginForm, RegistrationForm, ResetPasswordForm, UserProfileForm, UserForm, PasswordChangeForm
 from .models import Account, UserProfile
 
 # # Create your views here.
@@ -52,6 +52,11 @@ def register(request):
             send_email_verification(request, user)
             print("Got Here")
             return redirect('/account/login/?command=verification&email=' + email)
+        else:
+
+            form = RegistrationForm()
+        return render(request, "account/signup.html", {
+            "form": form})
     else:
         form = RegistrationForm()
         return render(request, "account/signup.html", {
@@ -81,9 +86,11 @@ def user_login(request):
             messages.success(request, "You have successfully logged-in!")
             return redirect('home')
         else:
-            print(user)
+
             messages.error(request, "Invalid Login Credentials")
-    return render(request, 'account/login.html')
+    return render(request, 'account/login.html', {
+        "form": LoginForm()
+    })
 
 
 @login_required(login_url="login")
@@ -201,24 +208,28 @@ def change_password(request):
 
 @login_required(login_url='login')
 def edit_profile(request, profile_pk):
-    user_profile = get_object_or_404(UserProfile, pk=profile_pk)
+    print("Here profile")
     if request.method == "POST":
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = UserProfileForm(
-            request.POST, request.FILES, instance=user_profile)
-        print(user_form.errors)
-        print(profile_form.errors)
-        if user_form.is_valid() and profile_form.is_valid():
-            print("Did it")
-            user_form.save()
-            profile_form.save()
-            messages.success(request, "Your Update was saved successfully")
-            print("Here")
-            return redirect(reverse('edit-profile', args=[profile_pk]))
+        print("Here profile")
+        if UserProfile.objects.filter(pk=profile_pk).exists():
+            user_profile = UserProfile.objects.get(pk=profile_pk)
+            user_form = UserForm(request.POST,
+                                 instance=request.user)
+            profile_form = UserProfileForm(
+                request.POST, request.FILES, instance=user_profile)
+
+            if user_form.is_valid() and profile_form.is_valid():
+                print("Did it")
+                user_form.save()
+                profile_form.save()
+                messages.success(request, "Your Update was saved successfully")
+                print("Here")
+                return redirect(reverse('edit-profile', args=[profile_pk]))
 
     else:
-        user_form = UserForm(instance=request.user)
-        profile_form = UserProfileForm(instance=user_profile)
+
+        user_form = UserForm(instance=request.user.profile)
+        profile_form = UserProfileForm(instance=request.user.profile)
     context = {
         "user_form": user_form,
         "profile_form": profile_form

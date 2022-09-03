@@ -1,16 +1,16 @@
 {% load static %}
-{% load tailwind_tags %}
 
-{% tailwind_css %}
-<div  class="max-h-fit  bg-gradient-to-r from-indigo-500 max-w-full flex items-center justify-center box-content mt-20 sm:mt-0">
+ <script src="https://cdn.tailwindcss.com"></script>
+
+<div  class="max-h-fit  max-w-full flex items-center justify-center box-content mt-20 sm:mt-0">
   <div class="flex-row w-2/4 h-full">
         <div class="md:col-span-1 m-35">
           <div class="px-4 sm:px-0 m-10">
               <h3 class="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
-              <p class="mt-1 text-sm text-slate-200">Use a permanent email address where you can receive our mail.</p>
+              <p class="mt-1 text-sm text-gray-500">Use a permanent email address where you can receive our mail.</p>
           </div>
         </div>
-    <div class="mt-10 md:mt-0 md:col-span-2 bg-cyan-600 flex-auto items-center justify-center rounded">
+    <div class="mt-10 md:mt-0 md:col-span-2 bg-indigo-600 flex-auto items-center justify-center rounded">
       
       <form action="{% url 'register' %}" method="POST">
        {% csrf_token %}
@@ -18,17 +18,11 @@
           <div class="px-4 py-5 bg-white sm:p-6">
             <div class="md:col-span-1 m-35">
               
-          <div class="px-4 sm:px-0 m-10 flex justify-between">
+          <div class="px-4 sm:px-0 m-10 flex justify-between gap-3">
+              
               <h3 class="text-lg font-medium leading-6 text-gray-900">Signup </h3>
-              <svg
-            class="w-6 h-6 text-blue-300 fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24">
-            <path
-                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
-            />
-            </svg>
-               <p class="mt-1 text-sm text-gray-900">Already have an acount? <a href="{% url 'login' %}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"> Login</a></p>
+              <img class="h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow">
+               <p class="mt-1 text-sm text-gray-900">Already have an acount? <a href="{% url 'login' %}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"> Login</a></p>
           </div>
         </div>
                       {% if form.errors %}
@@ -150,10 +144,14 @@
             </div>
           </div>
           <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"> Register</button>
+            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"> Register</button>
           </div>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+<script>
+  document.querySelector("#id").classList = mt-1 focus: ring-indigo-500 focus: border-indigo-500 block w-full shadow-sm sm: text-sm border-gray-300 rounded-md"
+</script>

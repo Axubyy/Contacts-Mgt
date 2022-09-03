@@ -30,16 +30,22 @@ class HomeView(ListView):
 
 
 def home(request):
-    context = {
-        "all_contact": Contact.objects.all().count(),
-        "male_contacts": Contact.objects_gender.male().count(),
-        "female_contacts": Contact.objects_gender.female().count(),
-        "non_binary": Contact.objects_gender.non_binary().count(),
-        "all_contacts": Contact.objects.all(),
-        "personal_contacts_count": Contact.objects.filter(manager=request.user).count(),
-        "personal_contacts": Contact.objects.filter(manager=request.user),
-    }
-    return render(request, "contact/index.html", context)
+    if request.user.is_authenticated:
+        context = {
+            "all_contact": Contact.objects.all().count(),
+            "male_contacts": Contact.objects_gender.male().count(),
+            "female_contacts": Contact.objects_gender.female().count(),
+            "non_binary": Contact.objects_gender.non_binary().count(),
+            "all_contacts": Contact.objects.all(),
+            "personal_contacts_count": Contact.objects.filter(manager=request.user).count(),
+            "personal_contacts": Contact.objects.filter(manager=request.user),
+        }
+        return render(request, "contact/index.html", context)
+    else:
+        context = {
+            "personal_contacts": "Welcome"
+        }
+    return render(request, "contact/home.html", context)
 
 
 # class HomeView(ListView):
@@ -54,7 +60,7 @@ def home(request):
 class ContactCreateView(LoginRequiredMixin, CreateView):
     model = Contact
     form_class = ContactForm
-    template_name = 'create.html'
+    template_name = 'contact/create_contact.html'
     # fields = ['first_name', 'email', 'phone', 'info', 'gender', 'image']
 
     def form_valid(self, form):
@@ -68,6 +74,7 @@ class ContactCreateView(LoginRequiredMixin, CreateView):
 
 class ContactUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ContactForm
+    model = Contact
     template_name = 'contact/contact_update.html'
     login_url = 'login'
 
@@ -75,7 +82,7 @@ class ContactUpdateView(LoginRequiredMixin, UpdateView):
         instance = form.save()
         messages.success(
             self.request, 'Your contact has been successfully updated!')
-        return redirect('detail', instance.pk)
+        return redirect('contact-detail', args=[instance.pk])
 
 
 class ContactDetailView(LoginRequiredMixin, DetailView):

@@ -1,6 +1,9 @@
 
-{% extends 'base_generic.html' %}
+{% extends 'account/base.html' %}
+{% load static %}
 {% load tailwind_tags %}
+
+{% tailwind_css %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,7 +11,7 @@
     {% block title %}
       <title>Caper</title>
     {% endblock %}
-    {% tailwind_css %}
+  
   </head>
   <body>
    
@@ -17,7 +20,7 @@
         {% if error %}
         <span href="#" class="font-medium text-red-600 ">{{error}}</span>
         {% endif %}
-        <form class="space-y-8 divide-y divide-gray-200" method="POST" action="{% url 'accounts:profile' %}" enctype="multipart/form-data">
+        <form class="space-y-8 divide-y divide-gray-200" method="POST" action="{% url 'update-contact' contact.pk %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% if form.errors %}
             <div class="rounded-md bg-red-50 p-4 show-message">
