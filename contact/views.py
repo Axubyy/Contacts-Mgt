@@ -1,14 +1,13 @@
 
 import csv
-from urllib import response
-from django.shortcuts import render, get_object_or_404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, HttpResponse, HttpResponseRedirect, redirect
 from django.views import View
 from django.views.generic import TemplateView, DeleteView, UpdateView, DetailView, CreateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
+from django.http import JsonResponse
 
 
 from account.models import Account
@@ -24,18 +23,20 @@ class HomeView(ListView):
     model = Contact
 
     def get_queryset(self):
+        print(self.request.user.profile)
         contacts = super().get_queryset().filter(manager=self.request.user)
         print(contacts)
         return contacts
 
 
 def home(request):
+    print(request.user)
     if request.user.is_authenticated:
         context = {
             "all_contact": Contact.objects.all().count(),
-            "male_contacts": Contact.objects_gender.male().count(),
-            "female_contacts": Contact.objects_gender.female().count(),
-            "non_binary": Contact.objects_gender.non_binary().count(),
+            "male_contacts": Contact.objects_gender.male().filter(manager=request.user).count(),
+            "female_contacts": Contact.objects_gender.female().filter(manager=request.user).count(),
+            "non_binary": Contact.objects_gender.non_binary().filter(manager=request.user).count(),
             "all_contacts": Contact.objects.all(),
             "personal_contacts_count": Contact.objects.filter(manager=request.user).count(),
             "personal_contacts": Contact.objects.filter(manager=request.user),
@@ -97,7 +98,7 @@ class ContactDetailView(LoginRequiredMixin, DetailView):
 def contacts_overview(request):
 
     context = {
-        "all_contact": Contact.objects.all().count(),
+        "all_contact_count": Contact.objects.all().count(),
         "male_contacts": Contact.objects_gender.male().count(),
         "female_contacts": Contact.objects_gender.female().count(),
         "non_binary": Contact.objects_gender.non_binary().count(),
@@ -108,6 +109,13 @@ def contacts_overview(request):
     return render(request, "contact/contacts_overview.html", context)
 
 
+# class ContactDeleteView(LoginRequiredMixin, View):
+#     def get(self, request, pk, *args, **kwargs):
+#         if request.is_ajax():
+#             contact = Contact.objects.filter(pk=pk)
+#             contact.delete()
+#             return JsonResponse({"message":"success"})
+#         return JsonResponse({"message": "success"})
 class ContactDeleteView(LoginRequiredMixin, DeleteView):
     model = Contact
     template_name = 'delete.html'
@@ -117,12 +125,6 @@ class ContactDeleteView(LoginRequiredMixin, DeleteView):
         messages.success(
             self.request, 'Your contact has been successfully deleted!')
         return super().delete(self, request, *args, **kwargs)
-
-
-# class SignUpView(CreateView):
-#     form_class = UserCreationForm
-#     template_name = 'registration/signup.html'
-#     success_url = reverse_lazy('home')
 
 
 @login_required(login_url='login')
@@ -167,7 +169,7 @@ def add_contact_as_favourite(request, contact_pk):
             "contact": contact
         }
     # return JsonResponse(resp, content_type="application/json")
-    return HttpResponseRedirect(request.META["HTTP_REFERRER"])
+    return redirect(request.META["HTTP_REFERER"])
 
 
 def generate_contact_csv(request, account_pk):
@@ -194,11 +196,6 @@ def import_csv(request, account_pk):
 
     if request.method == "POST":
         form = CsvForm(request.POST or None, request.FILES or None)
-        data = request.FILES.get("file_name", None)
-        print(data)
-        print(form.is_valid())
-        print(form.errors)
-        print("Formmm")
         if form.is_valid():
             print("here")
             form.save()
@@ -206,33 +203,36 @@ def import_csv(request, account_pk):
             contact_list = []
             try:
                 obj = CsvDoc.objects.get(activated=False)
+                print(obj)
                 with open(obj.file_name.path, 'r') as file:
                     reader = csv.reader(file)
                     for i, row in enumerate(reader):
                         if i == 0:
                             pass
                         else:
-                            row = "".join(row)
-                            row = row.replace(";", " ")
-                            row = row.split()
-                            manager = Account.objects.get(username=row[2])
-
+                            print(row[1])
                             import_account = Account.objects.get(pk=account_pk)
-                            contact_list.append(Contact(first_name=row[0], last_name=row[1], manager=manager.username,
-                                                        gender=row[3], category=row[4], contact_avatar=row[5], favourite=manager.username, date_created=row[7], date_updated=row[8]))
+                            contact_list.append(Contact(first_name=row[0], last_name=row[1], manager=import_account,
+                                                        gender=row[3], category=row[4], contact_avatar=row[5], date_created=row[7], date_updated=row[8]))
+                            print(contact_list)
                 contacts = Contact.objects.bulk_create(
                     contact_list)
+                print("GGG")
+                print(contacts)
+                print(contact_list)
                 obj.activated = True
                 obj.save()
                 messages.success(
-                    request, "Your Contact Imports sUccessfully Created!🎉")
+                    request, "Your new Contacts import were successfully Created!🎉")
             except (TypeError, ValueError, OverflowError, Account.DoesNotExist) as e:
                 print(e)
 
             return redirect('all-contacts')
         else:
+            print(form.errors)
+            messages.error(
+                request, "Contacts import error")
             form = CsvForm(request.POST, request.FILES)
-            print("else")
             return render(request, "contact/import_csv_form.html", {
                 'form': form,
             })

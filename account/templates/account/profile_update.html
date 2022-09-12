@@ -4,11 +4,23 @@
 
 {% block css_content %}
    <style>
-      #id_profile_pix, #profile_pix-clear_id {
-        border-radius:5px;
-        outline:2px solid transparent
-        border-color: indigo;
-      }
+    @keyframes notify{
+      0%{top:-100%}
+      25%{top:50%}
+      50%{top:50%}
+      100%{top:-100%}
+    }
+    .show-message{
+      position: absolute;
+      top:100%;
+      left:20px;
+      animation: notify 7s;
+    }
+    #id_profile_pix, #profile_pix-clear_id {
+      border-radius:5px;
+      outline:2px solid transparent
+      border-color: indigo;
+    }
     </style>
 {% endblock css_content %}
   

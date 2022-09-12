@@ -161,7 +161,7 @@ def reset_password(request):
 
     if request.method == "POST":
         old_password = request.POST["old_password"]
-        password = request.POST["password"]
+        password = request.POST["new_password"]
         confirm_password = request.POST["confirm_password"]
 
         if password == confirm_password:
@@ -189,7 +189,7 @@ def reset_password(request):
 def change_password(request):
     if request.method == "POST":
         old_password = request.POST["old_password"]
-        password = request.POST["password"]
+        password = request.POST["new_password"]
         confirm_password = request.POST["confirm_password"]
 
         if request.user.check_password(old_password) and password == confirm_password:

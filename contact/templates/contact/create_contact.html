@@ -1,19 +1,32 @@
 
 {% extends 'account/base.html' %}
-{% load static %}
-{% load tailwind_tags %}
+{% load static tailwind_tags %}
+{% tailwind_preload_css %}
 {% tailwind_css %}
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     {% block title %}
-      <title>Caper</title>
+      <title>Create Contact</title>
     {% endblock %}
    
   </head>
+    <style>
+    @keyframes notify{
+      0%{top:-100%}
+      25%{top:50%}
+      50%{top:50%}
+      100%{top:-100%}
+    }
+    .show-message{
+      position: absolute;
+      top:100%;
+      left:20px;
+      animation: notify 7s;
+    }
+  </style>
   <body>
    
     {% block content %}
@@ -116,13 +129,13 @@
                 <div class="sm:col-span-3">
                   <label for="first-name" class="block text-sm font-medium text-gray-700">Gender</label>
                   <div class="mt-1">
-                   {{form.gender}}
+                   {{ form.gender }}
                   </div>
                 </div>
                 <div class="sm:col-span-3">
                   <label for="last-name" class="block text-sm font-medium text-gray-700">Category</label>
                   <div class="mt-1">
-                    {{form.category}}
+                    {{ form.category }}
                   </div>
                 </div>
                 

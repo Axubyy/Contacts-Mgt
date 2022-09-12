@@ -1,3 +1,4 @@
+
 from django.db import models
 from account.models import Account
 from django.urls import reverse
@@ -60,4 +61,4 @@ class CsvDoc(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f" File id {self.id}"
+        return f" File id {self.file_name}"

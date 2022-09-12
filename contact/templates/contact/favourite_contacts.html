@@ -11,7 +11,7 @@
 
           <!-- Favourite Contacts list -->
           <div class="mt-8 max-w-5xl mx-auto px-4 pb-12 sm:px-6 lg:px-8">
-            <h2 class="text-sm font-medium text-gray-500">Team members</h2>
+            <h2 class="text-sm font-medium text-gray-500">Favourite Contacts</h2>
     
             <div class="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
                {% for fav_contact in contacts %}
@@ -23,12 +23,12 @@
                   <a href="{% url "contact-detail" fav_contact.pk %}" class="focus:outline-none">
                     <span class="absolute inset-0" aria-hidden="true"></span>
                     <p class="text-sm font-medium text-gray-900">{{fav_contact}}</p>
-                    <p class="text-sm text-gray-500 truncate">Co-Founder / CEO</p>
+                    <p class="text-sm text-gray-500 truncate">{{fav_contact.gender}}</p>
                   </a>
                 </div>
 
                 {% comment %} {% if fav %} {% endcomment %}
-                     <a href="{% url "favourite" fav_contact.pk %}">Remove from Favourites</a>
+                     <a href="{% url "favourite" fav_contact.pk %}" class="text-indigo-600 hover:text-indigo-900">Remove from Favourites</a>
                 {% comment %} {% endif %} {% endcomment %}
               </div>
               {% endfor %}
