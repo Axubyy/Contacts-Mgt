@@ -23,7 +23,7 @@ from django.conf.urls import (handler400, handler404, handler403, handler500)
 
 handler500 = "account.views.page_500"
 handler403 = "account.views.page_403"
-handler404 = "account.views.page_404"
+# handler404 = "account.views.page_404"
 handler400 = "account.views.page_400"
 urlpatterns = [
     path('admin/', admin.site.urls),

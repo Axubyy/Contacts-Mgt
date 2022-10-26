@@ -18,16 +18,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Contact',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('first_name', models.CharField(max_length=50)),
                 ('last_name', models.CharField(max_length=50)),
-                ('gender', models.CharField(choices=[('NB', 'Non-Binary'), ('M', 'Male'), ('F', 'Female')], default='M', max_length=20)),
-                ('category', models.CharField(choices=[('FM', 'Family'), ('WK', 'Work'), ('FR', 'Friends')], default='Family', max_length=20)),
-                ('contact_avatar', models.FileField(default='avatar.jpg', upload_to='contacts/avatar')),
+                ('gender', models.CharField(choices=[
+                 ('NB', 'Non-Binary'), ('M', 'Male'), ('F', 'Female')], default='M', max_length=20)),
+                ('category', models.CharField(choices=[
+                 ('FM', 'Family'), ('WK', 'Work'), ('FR', 'Friends')], default='Family', max_length=20)),
+                ('contact_avatar', models.FileField(
+                    default='avatar.png', upload_to='contacts/avatar')),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
                 ('date_updated', models.DateTimeField(auto_now=True)),
-                ('favourite', models.ManyToManyField(blank=True, default=None, related_name='favourite', to=settings.AUTH_USER_MODEL)),
-                ('manager', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='contacts', to=settings.AUTH_USER_MODEL)),
+                ('favourite', models.ManyToManyField(blank=True, default=None,
+                 related_name='favourite', to=settings.AUTH_USER_MODEL)),
+                ('manager', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='contacts', to=settings.AUTH_USER_MODEL)),
             ],
             managers=[
                 ('objects_gender', django.db.models.manager.Manager()),

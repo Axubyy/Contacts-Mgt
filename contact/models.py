@@ -19,6 +19,17 @@ class MyAccountContactsGenderManager(models.Manager):
         return super().get_queryset().filter(gender="NB")
 
 
+class MyAccountContactsCategoryManager(models.Manager):
+    def family(self):
+        return super().get_queryset().filter(category="Family")
+
+    def friends(self):
+        return super().get_queryset().filter(category="Friends")
+
+    def work(self):
+        return super().get_queryset().filter(category="Work")
+
+
 class Contact(models.Model):
     CHOICES = (
         ("NB", "Non-Binary"),
@@ -38,7 +49,7 @@ class Contact(models.Model):
     category = models.CharField(
         max_length=20, choices=CATEGORIES, default="Family")
     contact_avatar = models.FileField(
-        upload_to="contacts/avatar", default="avatar.jpg")
+        upload_to="contacts/avatar", default="avatar.png")
     favourite = models.ManyToManyField(
         Account, related_name="favourite", default=None, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -46,6 +57,7 @@ class Contact(models.Model):
 
     objects = models.Manager()
     objects_gender = MyAccountContactsGenderManager()
+    objects_category = MyAccountContactsCategoryManager()
 
     def __str__(self) -> str:
         return self.first_name
